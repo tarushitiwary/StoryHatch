@@ -1,0 +1,9 @@
+<h2>Featured Stories</h2>
+{% for story in stories %}
+  <div class="card my-3">
+    <div class="card-body">
+      <h5><a href="{% url 'story_detail' story.id %}">{{ story.title }}</a></h5>
+      <p>by {{ story.author.username }}</p>
+    </div>
+  </div>
+{% endfor %}
