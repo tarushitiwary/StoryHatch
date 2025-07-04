@@ -4,6 +4,12 @@ from .forms import SignupForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
+
+def create_admin():
+    User = get_user_model()
+    if not User.objects.filter(username='admin').exists():
+        User.objects.create_superuser('admin', 'admin@example.com', 'adminpass')
 
 def signup_view(request):
     if request.method == 'POST':
@@ -113,8 +119,10 @@ def story_detail_view(request, story_id):
 from django.db.models import Q
 
 def homepage_view(request):
+    create_admin()
     stories = Story.objects.filter(is_public=True).order_by('-created_at')[:10]
     return render(request, 'core/home.html', {'stories': stories})
+
 
 @login_required
 def my_stories_view(request):
@@ -141,4 +149,3 @@ def search_view(request):
             Q(author__username__icontains=query)
         ).filter(is_public=True)
     return render(request, 'core/search.html', {'results': results, 'query': query})
-    
