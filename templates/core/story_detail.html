@@ -1,0 +1,32 @@
+<h2>{{ story.title }}</h2>
+<p><strong>Author:</strong> {{ story.author.username }}</p>
+<p><strong>Summary:</strong> {{ story.summary }}</p>
+
+<h3>Chapters:</h3>
+{% for chapter in chapters %}
+  <div>
+    <h4>Chapter {{ chapter.chapter_number }}</h4>
+    <p>{{ chapter.content }}</p>
+    {% if chapter.parent_chapter %}
+      <p><em>Forked from Chapter {{ chapter.parent_chapter.chapter_number }}</em></p>
+    {% endif %}
+  </div>
+{% endfor %}
+
+{% if request.user.is_authenticated %}
+  <a href="{% url 'add_chapter' story.id %}">+ Add Chapter</a>
+{% endif %}
+
+{% if request.user.is_authenticated %}
+  <form action="{% url 'toggle_bookmark' story.id %}" method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-outline-primary">
+      {% if request.user in story.bookmarks.all %}
+        Remove Bookmark
+      {% else %}
+        Bookmark
+      {% endif %}
+    </button>
+  </form>
+{% endif %}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
