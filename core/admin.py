@@ -1,13 +1,9 @@
 from django.contrib import admin
-from .models import Story, Chapter, Comment, Bookmark
+from .models import Profile, Story, Chapter, Comment, Bookmark
 
-admin.site.register(Story)
-admin.site.register(Chapter)
 admin.site.register(Comment)
 admin.site.register(Bookmark)
 
-from django.contrib import admin
-from .models import Profile, Story, Chapter
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
