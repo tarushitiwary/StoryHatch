@@ -26,9 +26,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-g5c)!s0l&xylb81*i#!7-bz418ib69uilhn2ax_*8ge9a0y-%-'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ['yourappname.onrender.com']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'storyhatch.onrender.com']
 
 
 # Application definition
@@ -132,3 +132,4 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 if 'DATABASE_URL' in os.environ:
     DATABASES['default'] = dj_database_url.config(conn_max_age=600)
+
