@@ -1,9 +1,28 @@
-<h2>Featured Stories</h2>
-{% for story in stories %}
-  <div class="card my-3">
-    <div class="card-body">
-      <h5><a href="{% url 'story_detail' story.id %}">{{ story.title }}</a></h5>
-      <p>by {{ story.author.username }}</p>
-    </div>
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+  <h1 class="mb-4">Welcome to StoryHatch</h1>
+  <div class="d-flex gap-3 mb-5">
+    <a href="{% url 'stories:list' %}" class="btn btn-outline-primary">Explore Stories</a>
+    <a href="{% url 'stories:create' %}" class="btn btn-outline-success">Start Writing</a>
+    <a href="{% url 'profile:view' user.username %}" class="btn btn-outline-dark">Your Profile</a>
   </div>
-{% endfor %}
+
+  <h3>🌟 Featured Stories</h3>
+  <div class="row">
+    {% for story in featured_stories %}
+      <div class="col-md-4 mb-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">{{ story.title }}</h5>
+            <p class="card-text">{{ story.summary|truncatechars:100 }}</p>
+            <a href="{% url 'stories:detail' story.id %}" class="btn btn-primary">Read</a>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <p>No featured stories yet.</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

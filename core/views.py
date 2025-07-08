@@ -5,6 +5,8 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
+from .models import Story
+
 
 def create_admin():
     User = get_user_model()
@@ -50,8 +52,10 @@ def logout_view(request):
 
 @login_required
 def profile_view(request, username):
-    user = User.objects.get(username=username)
-    return render(request, 'core/profile.html', {'profile_user': user})
+    user = get_object_or_404(User, username=username)
+    stories = Story.objects.filter(author=user)
+    return render(request, 'accounts/profile.html', {'profile_user': user, 'stories': stories})
+
 
 from .forms import ProfileEditForm
 from django.contrib.auth.decorators import login_required
@@ -120,8 +124,14 @@ from django.db.models import Q
 
 def homepage_view(request):
     create_admin()
-    stories = Story.objects.filter(is_public=True).order_by('-created_at')[:10]
-    return render(request, 'core/home.html', {'stories': stories})
+    featured_stories = Story.objects.filter(is_featured=True)[:5]
+    return render(request, "core/home.html", {"featured_stories": featured_stories})
+
+
+def homepage_view(request):
+    featured_stories = Story.objects.filter(is_featured=True)[:5]
+    return render(request, "core/home.html", {"featured_stories": featured_stories})
+
 
 
 @login_required
