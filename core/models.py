@@ -6,6 +6,7 @@ class Story(models.Model):
     summary = models.TextField(blank=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='stories')
     is_public = models.BooleanField(default=True)
+    is_featured = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     bookmarks = models.ManyToManyField(User, related_name='bookmarked_stories', blank=True)
 
