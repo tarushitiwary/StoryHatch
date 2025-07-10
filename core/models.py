@@ -1,18 +1,27 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+from django.contrib.auth.models import User
+from django.db import models
+
 class Story(models.Model):
-    title = models.CharField(max_length=200)
-    summary = models.TextField(blank=True)
+    title = models.CharField(max_length=255)
+    summary = models.TextField()
+    content = models.TextField()
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='stories')
-    is_public = models.BooleanField(default=True)
-    is_featured = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
-    bookmarks = models.ManyToManyField(User, related_name='bookmarked_stories', blank=True)
+    is_public = models.BooleanField(default=True)
 
+    # Optional:
+    parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.SET_NULL, related_name='forks')
+    stars = models.ManyToManyField(User, related_name='starred_stories', blank=True)
 
-    def __str__(self):
-        return self.title
+    def is_fork(self):
+        return self.parent is not None
+
+    def star_count(self):
+        return self.stars.count()
+
 class Chapter(models.Model):
     story = models.ForeignKey(Story, on_delete=models.CASCADE, related_name='chapters')
     content = models.TextField()

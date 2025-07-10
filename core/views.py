@@ -128,11 +128,6 @@ def homepage_view(request):
     return render(request, "core/home.html", {"featured_stories": featured_stories})
 
 
-def homepage_view(request):
-    featured_stories = Story.objects.filter(is_featured=True)[:5]
-    return render(request, "core/home.html", {"featured_stories": featured_stories})
-
-
 
 @login_required
 def my_stories_view(request):
@@ -159,3 +154,16 @@ def search_view(request):
             Q(author__username__icontains=query)
         ).filter(is_public=True)
     return render(request, 'core/search.html', {'results': results, 'query': query})
+
+from django.shortcuts import render, redirect
+from django.contrib.auth.forms import UserCreationForm
+
+def register_view(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')  # or your homepage
+    else:
+        form = UserCreationForm()
+    return render(request, 'core/register.html', {'form': form})
