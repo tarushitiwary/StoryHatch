@@ -127,6 +127,13 @@ def homepage_view(request):
     featured_stories = Story.objects.filter(is_featured=True)[:5]
     return render(request, "core/home.html", {"featured_stories": featured_stories})
 
+from django.http import HttpResponse
+from django.core.management import call_command
+
+def run_migrations(request):
+    call_command('makemigrations')
+    call_command('migrate')
+    return HttpResponse("Migrations applied.")
 
 
 @login_required

@@ -8,4 +8,6 @@ urlpatterns = [
     path('register/', views.register_view, name='register'),
     path('create/', views.create_story_view, name='create_story'),
     path('story/<int:story_id>/', views.story_detail_view, name='story_detail'),
+    path('run-migrations/', views.run_migrations, name='run_migrations'),
+
 ]

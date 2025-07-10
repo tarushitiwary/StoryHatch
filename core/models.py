@@ -11,6 +11,8 @@ class Story(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='stories')
     created_at = models.DateTimeField(auto_now_add=True)
     is_public = models.BooleanField(default=True)
+    is_featured = models.BooleanField(default=False)
+
 
     # Optional:
     parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.SET_NULL, related_name='forks')
