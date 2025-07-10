@@ -6,7 +6,13 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 from .models import Story
+from django.http import HttpResponse
+from django.core.management import call_command
 
+def run_migrations(request):
+    call_command('makemigrations')
+    call_command('migrate')
+    return HttpResponse("Migrations applied.")  
 
 def create_admin():
     User = get_user_model()
@@ -126,14 +132,6 @@ def homepage_view(request):
     create_admin()
     featured_stories = Story.objects.filter(is_featured=True)[:5]
     return render(request, "core/home.html", {"featured_stories": featured_stories})
-
-from django.http import HttpResponse
-from django.core.management import call_command
-
-def run_migrations(request):
-    call_command('makemigrations')
-    call_command('migrate')
-    return HttpResponse("Migrations applied.")
 
 
 @login_required
